@@ -16,6 +16,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing the UI state of the Home screen.
+ * Processes user intents, handles background data fetching via use cases, 
+ * and exposes the current state to the UI using StateFlow.
+ */
+
 /** Single immutable state object for the Home screen (UDF). */
 data class HomeUiState(
     val isLoading: Boolean = true,
