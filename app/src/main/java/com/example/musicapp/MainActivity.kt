@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                         fontScale = density.fontScale * prefs.fontScale.scale,
                     )
                 ) {
+                    // Enable edge-to-edge display to draw the UI behind system bars for a modern look
                     MelodiaApp()
                 }
             }
