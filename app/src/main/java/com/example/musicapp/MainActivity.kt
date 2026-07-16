@@ -16,7 +16,7 @@ import com.example.musicapp.feature.settings.SettingsViewModel
 import com.example.musicapp.ui.MelodiaApp
 import com.example.musicapp.ui.theme.MusicAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-
+// Render the root composable of the application
 /**
  * Single-activity host. Extends [AppCompatActivity] so the AppCompat per-app
  * language backport applies on Android 12 and below. All UI is Compose.
