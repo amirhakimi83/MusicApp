@@ -1,5 +1,5 @@
 package com.example.musicapp
-
+// Inject SettingsViewModel to observe user preferences (e.g., theme, dynamic color) reactively
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
