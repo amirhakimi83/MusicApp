@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Wrap the application content with the core theme and apply dynamic color settings
         setContent {
             val settingsViewModel: SettingsViewModel = hiltViewModel()
             val prefs by settingsViewModel.preferences.collectAsStateWithLifecycle()
