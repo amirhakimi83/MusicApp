@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 AppTheme.DARK -> true
                 AppTheme.SYSTEM -> isSystemInDarkTheme()
             }
-
+            // Determine the active theme based on user preferences, falling back to the system default if necessary
             MusicAppTheme(darkTheme = darkTheme, dynamicColor = prefs.dynamicColor) {
                 // Apply the in-app font scale on top of the system scale.
                 val density = LocalDensity.current
