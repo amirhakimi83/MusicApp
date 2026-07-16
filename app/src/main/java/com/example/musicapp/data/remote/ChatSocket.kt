@@ -5,6 +5,11 @@ import com.example.musicapp.domain.model.MessageStatus
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * Manages the WebSocket connection for real-time chat functionality.
+ * Handles establishing connections, receiving real-time messages, and graceful disconnections.
+ */
+
 /** Events pushed from the server to the client over the realtime connection. */
 sealed interface ChatSocketEvent {
     /** A new message from the other participant. */
