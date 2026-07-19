@@ -1,6 +1,6 @@
 package com.example.musicapp.ui
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -12,20 +12,21 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.musicapp.feature.player.PlayerOverlay
+import com.example.musicapp.feature.player.PlayerViewModel
 import com.example.musicapp.ui.components.MelodiaTopBar
 import com.example.musicapp.ui.navigation.MelodiaBottomBar
 import com.example.musicapp.ui.navigation.MelodiaNavHost
 import com.example.musicapp.ui.navigation.TopLevelDestination
-import com.example.musicapp.ui.player.MiniPlayerSlot
 
 /**
- * Root of the app UI: a Scaffold hosting the top bar, the tab NavHost, the
- * persistent mini-player slot, and the bottom navigation bar. The bars only
- * show on top-level tab destinations.
+ * Root of the app UI: a Scaffold (top bar + tab NavHost + bottom navigation)
+ * with the player overlay drawn on top (mini-player / full Now Playing).
  */
 @Composable
 fun MelodiaApp(
     appViewModel: AppViewModel = hiltViewModel(),
+    playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
     val navController = rememberNavController()
     val user by appViewModel.currentUser.collectAsStateWithLifecycle()
@@ -36,41 +37,42 @@ fun MelodiaApp(
 
     fun navigateToTab(destination: TopLevelDestination) {
         navController.navigate(destination.route) {
-            // Avoid building up a large back stack; keep a single copy of each tab.
             popUpTo(navController.graph.findStartDestination().id) { saveState = true }
             launchSingleTop = true
             restoreState = true
         }
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            if (isTopLevel) {
-                MelodiaTopBar(
-                    avatarUrl = user?.avatarUrl,
-                    // Notifications & Settings destinations are wired in later steps.
-                    onNotificationsClick = { },
-                    onSettingsClick = { },
-                    onProfileClick = { navigateToTab(TopLevelDestination.PROFILE) },
-                )
-            }
-        },
-        bottomBar = {
-            if (isTopLevel) {
-                Column {
-                    MiniPlayerSlot()
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                if (isTopLevel) {
+                    MelodiaTopBar(
+                        avatarUrl = user?.avatarUrl,
+                        onNotificationsClick = { },
+                        onSettingsClick = { },
+                        onProfileClick = { navigateToTab(TopLevelDestination.PROFILE) },
+                    )
+                }
+            },
+            bottomBar = {
+                if (isTopLevel) {
                     MelodiaBottomBar(
                         currentRoute = currentRoute,
                         onNavigate = ::navigateToTab,
                     )
                 }
-            }
-        },
-    ) { innerPadding ->
-        MelodiaNavHost(
-            navController = navController,
-            modifier = Modifier.padding(innerPadding),
-        )
+            },
+        ) { innerPadding ->
+            MelodiaNavHost(
+                navController = navController,
+                onPlaySong = { playerViewModel.play(it) },
+                modifier = Modifier.padding(innerPadding),
+            )
+        }
+
+        // Player layer (mini-player + full Now Playing) drawn above everything.
+        PlayerOverlay(viewModel = playerViewModel)
     }
 }
