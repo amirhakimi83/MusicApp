@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MusicApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <!--
+        Base window theme. Must be an AppCompat (DayNight) theme so that
+        AppCompatActivity + per-app language backport work on Android 12 and
+        below. Actual UI is drawn by Compose (MusicAppTheme); this theme only
+        styles the window/splash while the app starts.
+    -->
+    <style name="Theme.MusicApp" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>

@@ -21,6 +21,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp">
@@ -37,13 +38,26 @@
         </activity>
 
         <!--
+            Stores the user's per-app language (AppCompatDelegate) automatically
+            on Android 12 and below. On Android 13+ the system handles it.
+        -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
+        <!--
             We provide a custom WorkManager Configuration via
             MusicApplication (Configuration.Provider), so the default
             on-startup initializer must be removed.
         -->
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authority="${applicationId}.androidx-startup"
+            android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
             <meta-data
