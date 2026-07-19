@@ -23,10 +23,21 @@ object Routes {
     const val PLAYLISTS = "playlists"
     const val PROFILE = "profile"
 
-    // Detail / full-screen routes (implemented in later steps)
+    // Detail / full-screen routes
     const val SETTINGS = "settings"
     const val PLAYER = "player"
     const val MESSAGES = "messages"
+    const val LIKED = "liked"
+    const val RECENT = "recent"
+    const val ARTISTS = "artists"
+
+    const val ARG_PLAYLIST_ID = "playlistId"
+    const val ARG_ARTIST_ID = "artistId"
+    const val PLAYLIST_DETAIL = "playlist/{$ARG_PLAYLIST_ID}"
+    const val ARTIST_DETAIL = "artist/{$ARG_ARTIST_ID}"
+
+    fun playlistDetail(id: String) = "playlist/$id"
+    fun artistDetail(id: String) = "artist/$id"
 }
 
 /** The five bottom-navigation tabs. */

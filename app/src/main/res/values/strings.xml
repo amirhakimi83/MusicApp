@@ -132,6 +132,7 @@
     <string name="chat_offline">You are offline. Showing saved messages.</string>
     <string name="social_public_playlists">Public playlists</string>
     <string name="social_friends">Friends</string>
+    <string name="artists_followed">Followed artists</string>
 
     <!-- Empty & error states -->
     <string name="empty_generic">Nothing here yet</string>

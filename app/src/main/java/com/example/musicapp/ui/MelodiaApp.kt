@@ -68,6 +68,7 @@ fun MelodiaApp(
             MelodiaNavHost(
                 navController = navController,
                 onPlaySong = { playerViewModel.play(it) },
+                onPlayList = { songs, index -> playerViewModel.play(songs, index) },
                 modifier = Modifier.padding(innerPadding),
             )
         }

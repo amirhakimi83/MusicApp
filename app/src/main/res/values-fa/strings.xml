@@ -133,6 +133,7 @@
     <string name="chat_offline">آفلاین هستید. پیام‌های ذخیره‌شده نمایش داده می‌شود.</string>
     <string name="social_public_playlists">پلی‌لیست‌های عمومی</string>
     <string name="social_friends">دوستان</string>
+    <string name="artists_followed">هنرمندان دنبال‌شده</string>
 
     <!-- Empty & error states -->
     <string name="empty_generic">هنوز چیزی اینجا نیست</string>
