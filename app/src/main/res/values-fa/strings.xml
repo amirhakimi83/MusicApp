@@ -145,4 +145,9 @@
     <string name="format_song_count">%1$d آهنگ</string>
     <string name="format_follower_count">%1$d دنبال‌کننده</string>
 
+    <plurals name="song_count">
+        <item quantity="one">%1$d آهنگ</item>
+        <item quantity="other">%1$d آهنگ</item>
+    </plurals>
+
 </resources>

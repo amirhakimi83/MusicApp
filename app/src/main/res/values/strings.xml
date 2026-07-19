@@ -144,4 +144,9 @@
     <string name="format_song_count">%1$d songs</string>
     <string name="format_follower_count">%1$d followers</string>
 
+    <plurals name="song_count">
+        <item quantity="one">%1$d song</item>
+        <item quantity="other">%1$d songs</item>
+    </plurals>
+
 </resources>
