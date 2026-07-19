@@ -14,6 +14,7 @@ import com.example.musicapp.domain.model.RepeatMode
 import com.example.musicapp.domain.model.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -138,7 +139,8 @@ class PlaybackConnection @Inject constructor(
     private fun managePositionUpdates(isPlaying: Boolean) {
         if (isPlaying) {
             if (positionJob?.isActive == true) return
-            positionJob = scope.launch {
+            // MediaController must be read on the main thread.
+            positionJob = scope.launch(Dispatchers.Main) {
                 while (true) {
                     controller?.let { c ->
                         _state.update { it.copy(positionMs = c.currentPosition.coerceAtLeast(0L)) }
