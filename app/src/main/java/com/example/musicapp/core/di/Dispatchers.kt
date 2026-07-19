@@ -17,3 +17,8 @@ annotation class DefaultDispatcher
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class MainDispatcher
+
+/** Application-lifetime [kotlinx.coroutines.CoroutineScope] for repository work. */
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class ApplicationScope
