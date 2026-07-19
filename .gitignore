@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Reports & docs (not part of the build)
+*.docx
+*.md
+
+# Claude Code local files
+.claude/
