@@ -15,7 +15,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,13 +41,12 @@ fun MelodiaTopBar(
     onSettingsClick: () -> Unit,
     onProfileClick: () -> Unit,
     modifier: Modifier = Modifier,
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
-        containerColor = Color.Transparent,
-    ),
 ) {
     TopAppBar(
         modifier = modifier,
-        colors = colors,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+        ),
         title = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
