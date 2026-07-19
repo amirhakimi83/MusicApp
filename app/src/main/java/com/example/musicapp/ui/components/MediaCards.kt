@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +29,10 @@ import com.example.musicapp.domain.model.Song
 import com.example.musicapp.ui.theme.AppCorners
 import com.example.musicapp.ui.theme.spacing
 
+/** Fixed card width, or fill the parent (e.g. a grid cell) when [Dp.Unspecified]. */
+private fun Modifier.cardWidth(width: Dp): Modifier =
+    if (width == Dp.Unspecified) fillMaxWidth() else width(width)
+
 /** Vertical song card used in horizontal rows (Home, playlist detail…). */
 @Composable
 fun SongCard(
@@ -38,7 +43,7 @@ fun SongCard(
 ) {
     Column(
         modifier = modifier
-            .width(width)
+            .cardWidth(width)
             .clip(AppCorners.card)
             .clickable(onClick = onClick),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall),
@@ -78,7 +83,7 @@ fun PlaylistCard(
 ) {
     Column(
         modifier = modifier
-            .width(width)
+            .cardWidth(width)
             .clip(AppCorners.card)
             .clickable(onClick = onClick),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall),
