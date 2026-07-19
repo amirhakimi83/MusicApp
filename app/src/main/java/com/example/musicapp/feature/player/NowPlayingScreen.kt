@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bedtime
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.DownloadDone
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
@@ -28,6 +30,7 @@ import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledIconButton
@@ -53,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.musicapp.R
+import com.example.musicapp.domain.model.DownloadState
 import com.example.musicapp.domain.model.PlaybackSpeed
 import com.example.musicapp.domain.model.RepeatMode
 import com.example.musicapp.domain.model.SleepTimerOption
@@ -66,6 +70,7 @@ import kotlinx.coroutines.isActive
 fun NowPlayingScreen(
     state: PlaybackState,
     sleepTimer: SleepTimerOption,
+    downloadState: DownloadState,
     coverModifier: Modifier,
     onCollapse: () -> Unit,
     onTogglePlay: () -> Unit,
@@ -76,6 +81,7 @@ fun NowPlayingScreen(
     onToggleShuffle: () -> Unit,
     onSetSpeed: (PlaybackSpeed) -> Unit,
     onSetSleepTimer: (SleepTimerOption) -> Unit,
+    onDownloadClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val song = state.currentSong ?: return
@@ -109,7 +115,7 @@ fun NowPlayingScreen(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
             )
-            Spacer(modifier = Modifier.size(48.dp))
+            DownloadButton(state = downloadState, onClick = onDownloadClick)
         }
 
         Spacer(modifier = Modifier.weight(0.5f))
@@ -219,6 +225,42 @@ private fun RotatingCover(
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surface),
         )
+    }
+}
+
+@Composable
+private fun DownloadButton(
+    state: DownloadState,
+    onClick: () -> Unit,
+) {
+    when (state) {
+        is DownloadState.InProgress -> {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(12.dp),
+                color = Color.White,
+                strokeWidth = 2.dp,
+            )
+        }
+        DownloadState.Completed -> {
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.DownloadDone,
+                    contentDescription = stringResource(R.string.action_download),
+                    tint = Color.White,
+                )
+            }
+        }
+        else -> {
+            IconButton(onClick = onClick) {
+                Icon(
+                    imageVector = Icons.Filled.Download,
+                    contentDescription = stringResource(R.string.action_download),
+                    tint = Color.White,
+                )
+            }
+        }
     }
 }
 

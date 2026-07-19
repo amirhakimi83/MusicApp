@@ -25,7 +25,7 @@ fun MelodiaNavHost(
     ) {
         composable(Routes.HOME) { HomeScreen(onSongClick = onPlaySong) }
         composable(Routes.SEARCH) { SearchScreen(onSongClick = onPlaySong) }
-        composable(Routes.DOWNLOADS) { DownloadsScreen() }
+        composable(Routes.DOWNLOADS) { DownloadsScreen(onSongClick = onPlaySong) }
         composable(Routes.PLAYLISTS) { PlaylistsScreen() }
         composable(Routes.PROFILE) { ProfileScreen() }
     }
