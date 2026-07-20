@@ -1,5 +1,11 @@
 package com.example.musicapp.feature.chat
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +51,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -153,7 +160,12 @@ fun ChatScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
         ) {
             items(items = messages, key = { it.id }) { message ->
-                MessageBubble(message = message)
+                MessageBubble(message = message, modifier = Modifier.animateItem())
+            }
+            if (isTyping) {
+                item(key = "typing-indicator") {
+                    TypingIndicator(modifier = Modifier.animateItem())
+                }
             }
         }
     }
@@ -188,7 +200,7 @@ fun ChatScreen(
 }
 
 @Composable
-private fun MessageBubble(message: ChatMessage) {
+private fun MessageBubble(message: ChatMessage, modifier: Modifier = Modifier) {
     val mine = message.isMine
     val bubbleColor = if (mine) {
         MaterialTheme.colorScheme.primary
@@ -208,7 +220,7 @@ private fun MessageBubble(message: ChatMessage) {
     )
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = if (mine) Arrangement.End else Arrangement.Start,
     ) {
         Surface(
@@ -377,6 +389,49 @@ private fun ChatInputBar(
                         MaterialTheme.colorScheme.onSurfaceVariant
                     },
                 )
+            }
+        }
+    }
+}
+
+/** Peer-style bubble with three dots that fade in and out to signal typing. */
+@Composable
+private fun TypingIndicator(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start,
+    ) {
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 4.dp, bottomEnd = 16.dp),
+        ) {
+            Row(
+                modifier = Modifier.padding(
+                    horizontal = MaterialTheme.spacing.medium,
+                    vertical = MaterialTheme.spacing.small,
+                ),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                val transition = rememberInfiniteTransition(label = "typing")
+                repeat(3) { index ->
+                    val dotAlpha by transition.animateFloat(
+                        initialValue = 0.3f,
+                        targetValue = 1f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(durationMillis = 600, delayMillis = index * 200),
+                            repeatMode = RepeatMode.Reverse,
+                        ),
+                        label = "dot$index",
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .alpha(dotAlpha)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.onSurfaceVariant),
+                    )
+                }
             }
         }
     }

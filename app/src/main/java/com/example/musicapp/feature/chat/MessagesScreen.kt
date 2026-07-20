@@ -68,6 +68,7 @@ fun MessagesScreen(
                     ConversationRow(
                         conversation = conversation,
                         onClick = { onOpenChat(conversation.id) },
+                        modifier = Modifier.animateItem(),
                     )
                 }
             }
@@ -79,9 +80,10 @@ fun MessagesScreen(
 private fun ConversationRow(
     conversation: Conversation,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(
