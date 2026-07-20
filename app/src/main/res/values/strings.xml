@@ -140,6 +140,10 @@
     <string name="chat_status_read">Read</string>
     <string name="chat_shared_song">Shared a song</string>
     <string name="chat_offline">You are offline. Showing saved messages.</string>
+    <string name="chat_online">Online</string>
+    <string name="chat_empty">No conversations yet</string>
+    <string name="chat_share_song">Share a song</string>
+    <string name="chat_send_song">Send song</string>
     <string name="social_public_playlists">Public playlists</string>
     <string name="social_friends">Friends</string>
     <string name="artists_followed">Followed artists</string>

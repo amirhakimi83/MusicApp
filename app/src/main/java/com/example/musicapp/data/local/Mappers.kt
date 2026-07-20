@@ -55,7 +55,15 @@ fun ConversationEntity.toConversation() = Conversation(
         username = participantUsername,
         avatarUrl = participantAvatar,
     ),
-    lastMessage = null,
+    lastMessage = lastMessageText?.let { preview ->
+        ChatMessage(
+            id = "",
+            conversationId = id,
+            senderId = "",
+            text = preview,
+            timestamp = lastTimestamp,
+        )
+    },
     unreadCount = unreadCount,
 )
 

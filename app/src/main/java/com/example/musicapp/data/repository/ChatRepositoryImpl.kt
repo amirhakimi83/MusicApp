@@ -8,6 +8,8 @@ import com.example.musicapp.data.local.toConversation
 import com.example.musicapp.data.local.toEntity
 import com.example.musicapp.data.local.toMessage
 import com.example.musicapp.data.mock.MockCatalog
+import com.example.musicapp.data.remote.ChatSocket
+import com.example.musicapp.data.remote.ChatSocketEvent
 import com.example.musicapp.domain.model.ChatMessage
 import com.example.musicapp.domain.model.Conversation
 import com.example.musicapp.domain.model.MessageStatus
@@ -16,9 +18,11 @@ import com.example.musicapp.domain.repository.ChatRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
@@ -26,20 +30,25 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Basic offline-first chat backed by Room. The realtime layer (WebSocket,
- * delivered/read receipts, typing indicator) is added in Step 13; the contract
- * and persistence are established here so the UI can be built against them.
+ * Offline-first chat: Room is the single source of truth for conversations and
+ * messages, while [ChatSocket] provides the realtime layer (delivery/read
+ * receipts, typing indicator and incoming messages). Socket frames are applied
+ * back into Room so the UI only ever observes the database — never polling.
  */
 @Singleton
 class ChatRepositoryImpl @Inject constructor(
     private val chatDao: ChatDao,
+    private val socket: ChatSocket,
     @IoDispatcher private val io: CoroutineDispatcher,
     @ApplicationScope private val appScope: CoroutineScope,
 ) : ChatRepository {
 
+    /** Per-conversation "peer is typing" state, fed by socket events. */
+    private val typing = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+
     init {
-        // Seed conversation list on first construction.
         appScope.launch(io) {
+            // Seed conversation list on first construction.
             MockCatalog.conversationsSeed.forEach { conv ->
                 chatDao.upsertConversation(
                     ConversationEntity(
@@ -53,6 +62,27 @@ class ChatRepositoryImpl @Inject constructor(
                         unreadCount = conv.unreadCount,
                     ),
                 )
+            }
+        }
+        // Apply realtime frames into Room / typing state.
+        appScope.launch(io) {
+            socket.events.collect { event -> handleEvent(event) }
+        }
+    }
+
+    private suspend fun handleEvent(event: ChatSocketEvent) {
+        when (event) {
+            is ChatSocketEvent.StatusChanged ->
+                chatDao.updateStatus(event.messageId, event.status.name)
+
+            is ChatSocketEvent.Typing ->
+                typing.update { it + (event.conversationId to event.isTyping) }
+
+            is ChatSocketEvent.IncomingMessage -> {
+                val message = event.message
+                chatDao.upsertMessage(message.toEntity())
+                chatDao.updateLastMessage(message.conversationId, message.preview(), message.timestamp)
+                chatDao.incrementUnread(message.conversationId)
             }
         }
     }
@@ -70,10 +100,10 @@ class ChatRepositoryImpl @Inject constructor(
             senderId = MockCatalog.currentUser.id,
             text = text,
             timestamp = System.currentTimeMillis(),
-            status = MessageStatus.SENT,
+            status = MessageStatus.SENDING,
             isMine = true,
         )
-        chatDao.upsertMessage(message.toEntity())
+        persistOutgoing(message)
     }
 
     override suspend fun sendSong(conversationId: String, song: Song) = withContext(io) {
@@ -83,27 +113,34 @@ class ChatRepositoryImpl @Inject constructor(
             senderId = MockCatalog.currentUser.id,
             sharedSong = song,
             timestamp = System.currentTimeMillis(),
-            status = MessageStatus.SENT,
+            status = MessageStatus.SENDING,
             isMine = true,
         )
-        chatDao.upsertMessage(message.toEntity())
+        persistOutgoing(message)
     }
 
-    override fun observeTyping(conversationId: String): Flow<Boolean> = flowOf(false)
+    private suspend fun persistOutgoing(message: ChatMessage) {
+        chatDao.upsertMessage(message.toEntity())
+        chatDao.updateLastMessage(message.conversationId, message.preview(), message.timestamp)
+        socket.send(message)
+    }
+
+    override fun observeTyping(conversationId: String): Flow<Boolean> =
+        typing.map { it[conversationId] ?: false }.distinctUntilChanged()
 
     override suspend fun setTyping(conversationId: String, isTyping: Boolean) {
-        // No-op until the realtime layer is wired up in Step 13.
+        socket.notifyTyping(conversationId, isTyping)
     }
 
     override suspend fun markConversationRead(conversationId: String) = withContext(io) {
         chatDao.clearUnread(conversationId)
+        socket.markRead(conversationId)
     }
 
-    override fun connect() {
-        // Realtime socket connection is established in Step 13.
-    }
+    override fun connect() = socket.connect()
 
-    override fun disconnect() {
-        // No-op for now.
-    }
+    override fun disconnect() = socket.disconnect()
+
+    private fun ChatMessage.preview(): String =
+        if (isSongShare) "🎵 ${sharedSong?.title.orEmpty()}" else text.orEmpty()
 }

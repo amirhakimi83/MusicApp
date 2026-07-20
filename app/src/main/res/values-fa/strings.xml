@@ -141,6 +141,10 @@
     <string name="chat_status_read">خوانده شد</string>
     <string name="chat_shared_song">یک آهنگ به اشتراک گذاشت</string>
     <string name="chat_offline">آفلاین هستید. پیام‌های ذخیره‌شده نمایش داده می‌شود.</string>
+    <string name="chat_online">آنلاین</string>
+    <string name="chat_empty">هنوز گفتگویی ندارید</string>
+    <string name="chat_share_song">اشتراک‌گذاری آهنگ</string>
+    <string name="chat_send_song">ارسال آهنگ</string>
     <string name="social_public_playlists">پلی‌لیست‌های عمومی</string>
     <string name="social_friends">دوستان</string>
     <string name="artists_followed">هنرمندان دنبال‌شده</string>

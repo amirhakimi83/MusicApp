@@ -89,6 +89,12 @@ interface ChatDao {
     @Query("UPDATE conversations SET unreadCount = 0 WHERE id = :conversationId")
     suspend fun clearUnread(conversationId: String)
 
+    @Query("UPDATE conversations SET lastMessageText = :text, lastTimestamp = :timestamp WHERE id = :conversationId")
+    suspend fun updateLastMessage(conversationId: String, text: String, timestamp: Long)
+
+    @Query("UPDATE conversations SET unreadCount = unreadCount + 1 WHERE id = :conversationId")
+    suspend fun incrementUnread(conversationId: String)
+
     @Query("SELECT * FROM messages WHERE conversationId = :conversationId ORDER BY timestamp ASC")
     fun observeMessages(conversationId: String): Flow<List<MessageEntity>>
 

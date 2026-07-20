@@ -6,6 +6,8 @@ import com.example.musicapp.data.repository.LibraryRepositoryImpl
 import com.example.musicapp.data.repository.MusicRepositoryImpl
 import com.example.musicapp.data.repository.SearchHistoryRepositoryImpl
 import com.example.musicapp.data.repository.SearchRepositoryImpl
+import com.example.musicapp.data.remote.ChatSocket
+import com.example.musicapp.data.remote.FakeChatSocket
 import com.example.musicapp.data.repository.SettingsRepositoryImpl
 import com.example.musicapp.data.repository.UserRepositoryImpl
 import com.example.musicapp.domain.repository.ChatRepository
@@ -46,6 +48,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindChatRepository(impl: ChatRepositoryImpl): ChatRepository
+
+    @Binds
+    abstract fun bindChatSocket(impl: FakeChatSocket): ChatSocket
 
     @Binds
     abstract fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository
