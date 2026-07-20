@@ -10,6 +10,8 @@ import androidx.navigation.navArgument
 import com.example.musicapp.domain.model.Song
 import com.example.musicapp.feature.artist.ArtistDetailScreen
 import com.example.musicapp.feature.artist.FollowedArtistsScreen
+import com.example.musicapp.feature.chat.ChatScreen
+import com.example.musicapp.feature.chat.MessagesScreen
 import com.example.musicapp.feature.downloads.DownloadsScreen
 import com.example.musicapp.feature.home.HomeScreen
 import com.example.musicapp.feature.library.LikedSongsScreen
@@ -58,9 +60,23 @@ fun MelodiaNavHost(
                 onOpenLiked = { navController.navigate(Routes.LIKED) },
                 onOpenRecent = { navController.navigate(Routes.RECENT) },
                 onOpenArtists = { navController.navigate(Routes.ARTISTS) },
+                onOpenMessages = { navController.navigate(Routes.MESSAGES) },
             )
         }
         composable(Routes.SETTINGS) { SettingsScreen(onBack = { back() }) }
+
+        composable(Routes.MESSAGES) {
+            MessagesScreen(
+                onBack = { back() },
+                onOpenChat = { navController.navigate(Routes.chat(it)) },
+            )
+        }
+        composable(
+            route = Routes.CHAT,
+            arguments = listOf(navArgument(Routes.ARG_CONVERSATION_ID) { type = NavType.StringType }),
+        ) {
+            ChatScreen(onBack = { back() })
+        }
 
         composable(Routes.LIKED) {
             LikedSongsScreen(onBack = { back() }, onPlaySong = onPlaySong, onPlayList = onPlayList)

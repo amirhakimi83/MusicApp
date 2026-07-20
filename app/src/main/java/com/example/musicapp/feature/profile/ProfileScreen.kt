@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Person
@@ -58,6 +59,7 @@ fun ProfileScreen(
     onOpenLiked: () -> Unit,
     onOpenRecent: () -> Unit,
     onOpenArtists: () -> Unit,
+    onOpenMessages: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
@@ -194,6 +196,11 @@ fun ProfileScreen(
                     icon = Icons.Outlined.Person,
                     label = stringResource(R.string.profile_followed_artists),
                     onClick = onOpenArtists,
+                )
+                ProfileRow(
+                    icon = Icons.Outlined.ChatBubbleOutline,
+                    label = stringResource(R.string.chat_title),
+                    onClick = onOpenMessages,
                 )
                 ProfileRow(
                     icon = Icons.Filled.Settings,

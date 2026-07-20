@@ -51,7 +51,7 @@ fun MelodiaApp(
                 if (isTopLevel) {
                     MelodiaTopBar(
                         avatarUrl = user?.avatarUrl,
-                        onNotificationsClick = { },
+                        onNotificationsClick = { navController.navigate(Routes.MESSAGES) },
                         onSettingsClick = { navController.navigate(Routes.SETTINGS) },
                         onProfileClick = { navigateToTab(TopLevelDestination.PROFILE) },
                     )
