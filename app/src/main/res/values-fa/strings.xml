@@ -87,11 +87,16 @@
     <string name="profile_settings">تنظیمات</string>
     <string name="profile_followers">دنبال‌کننده‌ها</string>
     <string name="profile_following">دنبال‌شده‌ها</string>
+    <string name="profile_liked_songs">آهنگ‌های پسندیده</string>
+    <string name="profile_recently_played">اخیراً شنیده‌شده</string>
+    <string name="profile_followed_artists">هنرمندان دنبال‌شده</string>
 
     <!-- Premium -->
     <string name="premium_required_title">نیاز به اشتراک ویژه</string>
     <string name="premium_required_message">دانلود آفلاین فقط برای کاربران ویژه در دسترس است.</string>
     <string name="premium_success">شما اکنون کاربر ویژه هستید!</string>
+    <string name="premium_upgrade_title">ملودیا ویژه</string>
+    <string name="premium_upgrade_message">پخش بدون تبلیغات، دانلود آفلاین، کیفیت صدای بالاتر و رد کردن نامحدود آهنگ‌ها.</string>
 
     <!-- Player -->
     <string name="player_now_playing">در حال پخش</string>
@@ -119,7 +124,12 @@
     <string name="settings_theme_system">پیش‌فرض سیستم</string>
     <string name="settings_dynamic_color">رنگ‌های Material You</string>
     <string name="settings_font_size">اندازه فونت</string>
+    <string name="settings_font_small">کوچک</string>
+    <string name="settings_font_normal">معمولی</string>
+    <string name="settings_font_large">بزرگ</string>
     <string name="settings_logout">خروج از حساب</string>
+    <string name="settings_logout_title">خروج از حساب؟</string>
+    <string name="settings_logout_message">از حساب خارج می‌شوید و اشتراک ویژه و تصویر پروفایل به حالت اولیه بازمی‌گردد.</string>
 
     <!-- Social / Chat -->
     <string name="chat_title">پیام‌ها</string>

@@ -48,6 +48,13 @@ class UserRepositoryImpl @Inject constructor(
         dataStore.edit { it[PreferenceKeys.IS_PREMIUM] = true }
     }
 
+    override suspend fun logout() {
+        dataStore.edit {
+            it.remove(PreferenceKeys.IS_PREMIUM)
+            it.remove(PreferenceKeys.AVATAR_URI)
+        }
+    }
+
     override fun getFollowedUsers(): Flow<List<User>> = followedUserIds.map { ids ->
         MockCatalog.otherUsers.filter { it.id in ids }.map { it.copy(isFollowed = true) }
     }.flowOn(io)

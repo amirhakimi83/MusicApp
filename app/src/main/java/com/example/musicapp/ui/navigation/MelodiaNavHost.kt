@@ -18,6 +18,7 @@ import com.example.musicapp.feature.playlists.PlaylistDetailScreen
 import com.example.musicapp.feature.playlists.PlaylistsScreen
 import com.example.musicapp.feature.profile.ProfileScreen
 import com.example.musicapp.feature.search.SearchScreen
+import com.example.musicapp.feature.settings.SettingsScreen
 
 @Composable
 fun MelodiaNavHost(
@@ -51,7 +52,15 @@ fun MelodiaNavHost(
         composable(Routes.PLAYLISTS) {
             PlaylistsScreen(onPlaylistClick = { openPlaylist(it.id) })
         }
-        composable(Routes.PROFILE) { ProfileScreen() }
+        composable(Routes.PROFILE) {
+            ProfileScreen(
+                onOpenSettings = { navController.navigate(Routes.SETTINGS) },
+                onOpenLiked = { navController.navigate(Routes.LIKED) },
+                onOpenRecent = { navController.navigate(Routes.RECENT) },
+                onOpenArtists = { navController.navigate(Routes.ARTISTS) },
+            )
+        }
+        composable(Routes.SETTINGS) { SettingsScreen(onBack = { back() }) }
 
         composable(Routes.LIKED) {
             LikedSongsScreen(onBack = { back() }, onPlaySong = onPlaySong, onPlayList = onPlayList)

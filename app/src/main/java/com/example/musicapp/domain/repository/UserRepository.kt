@@ -11,6 +11,9 @@ interface UserRepository {
     suspend fun updateAvatar(uri: String)
     suspend fun upgradeToPremium()
 
+    /** Reset the mock session: clears Premium status and any custom avatar. */
+    suspend fun logout()
+
     fun getFollowedUsers(): Flow<List<User>>
     fun getFollowedArtists(): Flow<List<Artist>>
     suspend fun toggleFollowUser(userId: String)

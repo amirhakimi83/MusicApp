@@ -17,6 +17,7 @@ import com.example.musicapp.feature.player.PlayerViewModel
 import com.example.musicapp.ui.components.MelodiaTopBar
 import com.example.musicapp.ui.navigation.MelodiaBottomBar
 import com.example.musicapp.ui.navigation.MelodiaNavHost
+import com.example.musicapp.ui.navigation.Routes
 import com.example.musicapp.ui.navigation.TopLevelDestination
 
 /**
@@ -51,7 +52,7 @@ fun MelodiaApp(
                     MelodiaTopBar(
                         avatarUrl = user?.avatarUrl,
                         onNotificationsClick = { },
-                        onSettingsClick = { },
+                        onSettingsClick = { navController.navigate(Routes.SETTINGS) },
                         onProfileClick = { navigateToTab(TopLevelDestination.PROFILE) },
                     )
                 }
