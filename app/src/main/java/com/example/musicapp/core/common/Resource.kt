@@ -1,8 +1,8 @@
 package com.example.musicapp.core.common
 
 /**
- * Generic wrapper for one-shot async results (network/db calls that can fail).
- * For continuously observed data we use Flow directly instead.
+ * A generic class that holds a value with its loading status.
+ * Used to pass state, data, and exceptions between the Data layer and the UI layer safely.
  */
 sealed interface Resource<out T> {
     data class Success<T>(val data: T) : Resource<T>
