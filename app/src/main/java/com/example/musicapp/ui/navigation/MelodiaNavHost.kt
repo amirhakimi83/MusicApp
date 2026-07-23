@@ -21,6 +21,7 @@ import com.example.musicapp.feature.playlists.PlaylistsScreen
 import com.example.musicapp.feature.profile.ProfileScreen
 import com.example.musicapp.feature.search.SearchScreen
 import com.example.musicapp.feature.settings.SettingsScreen
+import com.example.musicapp.feature.social.PeopleScreen
 
 @Composable
 fun MelodiaNavHost(
@@ -61,12 +62,19 @@ fun MelodiaNavHost(
                 onOpenRecent = { navController.navigate(Routes.RECENT) },
                 onOpenArtists = { navController.navigate(Routes.ARTISTS) },
                 onOpenMessages = { navController.navigate(Routes.MESSAGES) },
+                onOpenPeople = { navController.navigate(Routes.PEOPLE) },
             )
         }
         composable(Routes.SETTINGS) { SettingsScreen(onBack = { back() }) }
 
         composable(Routes.MESSAGES) {
             MessagesScreen(
+                onBack = { back() },
+                onOpenChat = { navController.navigate(Routes.chat(it)) },
+            )
+        }
+        composable(Routes.PEOPLE) {
+            PeopleScreen(
                 onBack = { back() },
                 onOpenChat = { navController.navigate(Routes.chat(it)) },
             )

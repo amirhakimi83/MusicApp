@@ -13,6 +13,9 @@ interface ChatRepository {
     fun getConversations(): Flow<List<Conversation>>
     fun getMessages(conversationId: String): Flow<List<ChatMessage>>
 
+    /** Returns the conversation id for a direct chat with [userId], creating it if needed. */
+    suspend fun getOrCreateConversationId(userId: String): String
+
     suspend fun sendTextMessage(conversationId: String, text: String)
     suspend fun sendSong(conversationId: String, song: Song)
 

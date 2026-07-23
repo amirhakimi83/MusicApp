@@ -71,6 +71,10 @@ class UserRepositoryImpl @Inject constructor(
         followedArtistIds.update { if (artistId in it) it - artistId else it + artistId }
     }
 
+    override fun getAllOtherUsers(): Flow<List<User>> = followedUserIds.map { ids ->
+        MockCatalog.otherUsers.map { it.copy(isFollowed = it.id in ids) }
+    }.flowOn(io)
+
     override fun getPublicPlaylists(): Flow<List<Playlist>> = flow {
         emit(MockCatalog.globalPlaylists.map { it.copy(isPublic = true) })
     }.flowOn(io)

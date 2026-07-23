@@ -94,6 +94,26 @@ class ChatRepositoryImpl @Inject constructor(
     override fun getMessages(conversationId: String): Flow<List<ChatMessage>> =
         chatDao.observeMessages(conversationId).map { list -> list.map { it.toMessage() } }.flowOn(io)
 
+    override suspend fun getOrCreateConversationId(userId: String): String = withContext(io) {
+        val conversationId = "conv_$userId"
+        val user = MockCatalog.userById(userId)
+        if (user != null) {
+            chatDao.insertConversationIfAbsent(
+                ConversationEntity(
+                    id = conversationId,
+                    participantId = user.id,
+                    participantName = user.name,
+                    participantUsername = user.username,
+                    participantAvatar = user.avatarUrl,
+                    lastMessageText = null,
+                    lastTimestamp = System.currentTimeMillis(),
+                    unreadCount = 0,
+                ),
+            )
+        }
+        conversationId
+    }
+
     override suspend fun sendTextMessage(conversationId: String, text: String) = withContext(io) {
         val message = ChatMessage(
             id = UUID.randomUUID().toString(),

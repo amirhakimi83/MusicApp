@@ -105,6 +105,7 @@
     <string name="player_playback_speed">سرعت پخش</string>
     <string name="player_lyrics">متن آهنگ</string>
     <string name="player_queue">صف پخش</string>
+    <string name="share_song_message">آهنگ «%1$s» از %2$s رو توی ملودیا گوش کن!</string>
     <string name="sleep_timer_off">خاموش</string>
     <string name="sleep_timer_15">۱۵ دقیقه</string>
     <string name="sleep_timer_30">۳۰ دقیقه</string>
@@ -148,6 +149,8 @@
     <string name="social_public_playlists">پلی‌لیست‌های عمومی</string>
     <string name="social_friends">دوستان</string>
     <string name="artists_followed">هنرمندان دنبال‌شده</string>
+    <string name="people_title">افراد</string>
+    <string name="profile_people">افراد</string>
 
     <!-- Empty & error states -->
     <string name="empty_generic">هنوز چیزی اینجا نیست</string>

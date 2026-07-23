@@ -1,5 +1,6 @@
 package com.example.musicapp.feature.player
 
+import android.content.Intent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.RepeatOne
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
@@ -51,6 +53,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -115,6 +118,7 @@ fun NowPlayingScreen(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
             )
+            ShareButton(title = song.title, artistName = song.artistName)
             DownloadButton(state = downloadState, onClick = onDownloadClick)
         }
 
@@ -224,6 +228,27 @@ private fun RotatingCover(
                 .size(18.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surface),
+        )
+    }
+}
+
+@Composable
+private fun ShareButton(title: String, artistName: String) {
+    val context = LocalContext.current
+    val message = stringResource(R.string.share_song_message, title, artistName)
+    IconButton(
+        onClick = {
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, message)
+            }
+            context.startActivity(Intent.createChooser(sendIntent, null))
+        },
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Share,
+            contentDescription = stringResource(R.string.action_share),
+            tint = Color.White,
         )
     }
 }

@@ -60,6 +60,7 @@ fun ProfileScreen(
     onOpenRecent: () -> Unit,
     onOpenArtists: () -> Unit,
     onOpenMessages: () -> Unit,
+    onOpenPeople: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
@@ -196,6 +197,11 @@ fun ProfileScreen(
                     icon = Icons.Outlined.Person,
                     label = stringResource(R.string.profile_followed_artists),
                     onClick = onOpenArtists,
+                )
+                ProfileRow(
+                    icon = Icons.Outlined.Person,
+                    label = stringResource(R.string.profile_people),
+                    onClick = onOpenPeople,
                 )
                 ProfileRow(
                     icon = Icons.Outlined.ChatBubbleOutline,

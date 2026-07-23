@@ -30,6 +30,7 @@ object Routes {
     const val LIKED = "liked"
     const val RECENT = "recent"
     const val ARTISTS = "artists"
+    const val PEOPLE = "people"
 
     const val ARG_PLAYLIST_ID = "playlistId"
     const val ARG_ARTIST_ID = "artistId"

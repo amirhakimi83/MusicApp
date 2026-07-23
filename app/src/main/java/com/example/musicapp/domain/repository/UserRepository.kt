@@ -19,6 +19,9 @@ interface UserRepository {
     suspend fun toggleFollowUser(userId: String)
     suspend fun toggleFollowArtist(artistId: String)
 
+    /** Everyone else on the platform, with live follow state — for the People/discover screen. */
+    fun getAllOtherUsers(): Flow<List<User>>
+
     /** Public playlists of other users (for the social/discovery section). */
     fun getPublicPlaylists(): Flow<List<Playlist>>
     suspend fun getUserById(id: String): User?
