@@ -1,9 +1,8 @@
 package com.example.musicapp.domain.model
 
 /**
- * Core music entity. The five fields required by the spec
- * (id, title, artist_name, cover_image_url, audio_url) are always present;
- * the rest are enriched locally (like/download state, duration, album).
+ * Represents a single audio track within the application.
+ * Contains essential metadata required for playback and UI representation.
  */
 data class Song(
     val id: String,
