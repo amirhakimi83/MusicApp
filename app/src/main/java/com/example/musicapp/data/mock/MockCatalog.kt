@@ -96,8 +96,8 @@ object MockCatalog {
     /** The signed-in user (Premium flag comes from DataStore at runtime). */
     val currentUser = User(
         id = "me",
-        name = "Hamed",
-        username = "@hamed",
+        name = "Amir",
+        username = "amir",
         avatarUrl = "$COVER/me/300/300",
         isPremium = false,
         followerCount = 128,
@@ -106,11 +106,11 @@ object MockCatalog {
 
     /** Other users for the social / chat features. */
     val otherUsers: List<User> = listOf(
-        User("u1", "Sara", "@sara_m", "$COVER/u1/300/300", followerCount = 340),
-        User("u2", "Reza", "@reza.k", "$COVER/u2/300/300", followerCount = 512),
-        User("u3", "Nazanin", "@naznz", "$COVER/u3/300/300", followerCount = 210),
-        User("u4", "Amir", "@amir99", "$COVER/u4/300/300", followerCount = 98),
-        User("u5", "Mina", "@minaa", "$COVER/u5/300/300", followerCount = 764),
+        User("u1", "Sara", "sara_m", "$COVER/u1/300/300", followerCount = 340),
+        User("u2", "Reza", "reza.k", "$COVER/u2/300/300", followerCount = 512),
+        User("u3", "Nazanin", "naznz", "$COVER/u3/300/300", followerCount = 210),
+        User("u4", "Kian", "kian99", "$COVER/u4/300/300", followerCount = 98),
+        User("u5", "Mina", "minaa", "$COVER/u5/300/300", followerCount = 764),
     )
 
     val conversationsSeed: List<Conversation> = otherUsers.take(3).mapIndexed { i, u ->

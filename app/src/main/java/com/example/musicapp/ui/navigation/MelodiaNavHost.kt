@@ -75,7 +75,7 @@ fun MelodiaNavHost(
             route = Routes.CHAT,
             arguments = listOf(navArgument(Routes.ARG_CONVERSATION_ID) { type = NavType.StringType }),
         ) {
-            ChatScreen(onBack = { back() })
+            ChatScreen(onBack = { back() }, onSongClick = onPlaySong)
         }
 
         composable(Routes.LIKED) {

@@ -83,8 +83,9 @@ interface ChatDao {
     @Query("SELECT * FROM conversations ORDER BY lastTimestamp DESC")
     fun observeConversations(): Flow<List<ConversationEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertConversation(conversation: ConversationEntity)
+    /** Seed-only insert: never overwrites an existing row (preserves last message / unread count). */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertConversationIfAbsent(conversation: ConversationEntity)
 
     @Query("UPDATE conversations SET unreadCount = 0 WHERE id = :conversationId")
     suspend fun clearUnread(conversationId: String)
@@ -103,7 +104,4 @@ interface ChatDao {
 
     @Query("UPDATE messages SET status = :status WHERE id = :messageId")
     suspend fun updateStatus(messageId: String, status: String)
-
-    @Query("UPDATE messages SET status = :status WHERE conversationId = :conversationId AND isMine = 1")
-    suspend fun markMineAs(conversationId: String, status: String)
 }

@@ -48,9 +48,10 @@ class ChatRepositoryImpl @Inject constructor(
 
     init {
         appScope.launch(io) {
-            // Seed conversation list on first construction.
+            // Seed conversation list on first construction only — must not clobber
+            // an existing row on later app launches (would wipe last message / unread count).
             MockCatalog.conversationsSeed.forEach { conv ->
-                chatDao.upsertConversation(
+                chatDao.insertConversationIfAbsent(
                     ConversationEntity(
                         id = conv.id,
                         participantId = conv.participant.id,

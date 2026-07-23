@@ -73,6 +73,7 @@ import com.example.musicapp.ui.theme.spacing
 @Composable
 fun ChatScreen(
     onBack: () -> Unit,
+    onSongClick: (Song) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ChatViewModel = hiltViewModel(),
 ) {
@@ -160,7 +161,11 @@ fun ChatScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
         ) {
             items(items = messages, key = { it.id }) { message ->
-                MessageBubble(message = message, modifier = Modifier.animateItem())
+                MessageBubble(
+                    message = message,
+                    onSongClick = onSongClick,
+                    modifier = Modifier.animateItem(),
+                )
             }
             if (isTyping) {
                 item(key = "typing-indicator") {
@@ -200,7 +205,11 @@ fun ChatScreen(
 }
 
 @Composable
-private fun MessageBubble(message: ChatMessage, modifier: Modifier = Modifier) {
+private fun MessageBubble(
+    message: ChatMessage,
+    onSongClick: (Song) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val mine = message.isMine
     val bubbleColor = if (mine) {
         MaterialTheme.colorScheme.primary
@@ -230,7 +239,9 @@ private fun MessageBubble(message: ChatMessage, modifier: Modifier = Modifier) {
         ) {
             Column(modifier = Modifier.padding(MaterialTheme.spacing.small)) {
                 if (message.isSongShare) {
-                    message.sharedSong?.let { SharedSongCard(it, contentColor) }
+                    message.sharedSong?.let {
+                        SharedSongCard(song = it, contentColor = contentColor, onClick = { onSongClick(it) })
+                    }
                 } else {
                     Text(
                         text = message.text.orEmpty(),
@@ -258,11 +269,13 @@ private fun MessageBubble(message: ChatMessage, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun SharedSongCard(song: Song, contentColor: Color) {
+private fun SharedSongCard(song: Song, contentColor: Color, onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
-        modifier = Modifier.widthIn(min = 200.dp),
+        modifier = Modifier
+            .widthIn(min = 200.dp)
+            .clickable(onClick = onClick),
     ) {
         NetworkImage(
             url = song.coverImageUrl,
