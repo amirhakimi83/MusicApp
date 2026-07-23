@@ -5,7 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-
+/**
+ * Data Access Objects (DAOs) for local database operations.
+ * Handles local caching, offline availability of user library, and fast data retrieval.
+ */
 @Dao
 interface LibraryDao {
 
