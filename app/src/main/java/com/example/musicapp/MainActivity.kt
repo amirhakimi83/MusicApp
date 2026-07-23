@@ -1,5 +1,5 @@
 package com.example.musicapp
-
+// Inject SettingsViewModel to observe user preferences (e.g., theme, dynamic color) reactively
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,7 +16,7 @@ import com.example.musicapp.feature.settings.SettingsViewModel
 import com.example.musicapp.ui.MelodiaApp
 import com.example.musicapp.ui.theme.MusicAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-
+// Render the root composable of the application
 /**
  * Single-activity host. Extends [AppCompatActivity] so the AppCompat per-app
  * language backport applies on Android 12 and below. All UI is Compose.
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Wrap the application content with the core theme and apply dynamic color settings
         setContent {
             val settingsViewModel: SettingsViewModel = hiltViewModel()
             val prefs by settingsViewModel.preferences.collectAsStateWithLifecycle()
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 AppTheme.DARK -> true
                 AppTheme.SYSTEM -> isSystemInDarkTheme()
             }
-
+            // Determine the active theme based on user preferences, falling back to the system default if necessary
             MusicAppTheme(darkTheme = darkTheme, dynamicColor = prefs.dynamicColor) {
                 // Apply the in-app font scale on top of the system scale.
                 val density = LocalDensity.current
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
                         fontScale = density.fontScale * prefs.fontScale.scale,
                     )
                 ) {
+                    // Enable edge-to-edge display to draw the UI behind system bars for a modern look
                     MelodiaApp()
                 }
             }
