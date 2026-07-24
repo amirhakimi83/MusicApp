@@ -246,7 +246,7 @@ private fun ResultsContent(
                 EmptyState(messageRes = R.string.search_no_results, icon = Icons.Outlined.SearchOff)
             } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(state.users, key = { it.id }) { user ->
+                    items(items = state.users, key = { it.id }) { user ->
                         UserRow(
                             user = user,
                             onClick = { onUserClick(user) },
