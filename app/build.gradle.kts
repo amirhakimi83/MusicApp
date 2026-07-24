@@ -49,6 +49,14 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    lint {
+        // Works around an AGP/lint-tooling crash in NonNullableMutableLiveDataDetector
+        // (IncompatibleClassChangeError). This project doesn't use LiveData at all
+        // (StateFlow/Channel/SharedFlow only), so the check is irrelevant noise anyway.
+        disable += "NullSafeMutableLiveData"
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
 }
 
 dependencies {
