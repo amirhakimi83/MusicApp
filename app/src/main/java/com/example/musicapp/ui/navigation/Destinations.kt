@@ -35,13 +35,16 @@ object Routes {
     const val ARG_PLAYLIST_ID = "playlistId"
     const val ARG_ARTIST_ID = "artistId"
     const val ARG_CONVERSATION_ID = "conversationId"
+    const val ARG_USER_ID = "userId"
     const val PLAYLIST_DETAIL = "playlist/{$ARG_PLAYLIST_ID}"
     const val ARTIST_DETAIL = "artist/{$ARG_ARTIST_ID}"
     const val CHAT = "chat/{$ARG_CONVERSATION_ID}"
+    const val FRIEND_PROFILE = "friend/{$ARG_USER_ID}"
 
     fun playlistDetail(id: String) = "playlist/$id"
     fun artistDetail(id: String) = "artist/$id"
     fun chat(conversationId: String) = "chat/$conversationId"
+    fun friendProfile(userId: String) = "friend/$userId"
 }
 
 /** The five bottom-navigation tabs. */

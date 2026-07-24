@@ -36,6 +36,7 @@
     <string name="action_unfollow">Unfollow</string>
     <string name="action_send">Send</string>
     <string name="action_share">Share</string>
+    <string name="action_message">Message</string>
     <string name="action_save">Save</string>
     <string name="action_edit">Edit</string>
     <string name="action_back">Back</string>
@@ -59,6 +60,7 @@
     <string name="search_filter_songs">Songs</string>
     <string name="search_filter_artists">Artists</string>
     <string name="search_filter_playlists">Playlists</string>
+    <string name="search_filter_users">People</string>
     <string name="search_no_results">No results found</string>
 
     <!-- Downloads -->

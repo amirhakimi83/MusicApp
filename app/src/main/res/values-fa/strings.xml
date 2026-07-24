@@ -37,6 +37,7 @@
     <string name="action_unfollow">لغو دنبال کردن</string>
     <string name="action_send">ارسال</string>
     <string name="action_share">اشتراک‌گذاری</string>
+    <string name="action_message">پیام</string>
     <string name="action_save">ذخیره</string>
     <string name="action_edit">ویرایش</string>
     <string name="action_back">بازگشت</string>
@@ -60,6 +61,7 @@
     <string name="search_filter_songs">آهنگ‌ها</string>
     <string name="search_filter_artists">هنرمندان</string>
     <string name="search_filter_playlists">پلی‌لیست‌ها</string>
+    <string name="search_filter_users">افراد</string>
     <string name="search_no_results">نتیجه‌ای یافت نشد</string>
 
     <!-- Downloads -->

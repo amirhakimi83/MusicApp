@@ -16,7 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.example.musicapp.R
 import com.example.musicapp.domain.model.User
-import com.example.musicapp.domain.repository.ChatRepository
 import com.example.musicapp.domain.repository.UserRepository
 import com.example.musicapp.ui.components.DetailTopBar
 import com.example.musicapp.ui.components.EmptyState
@@ -28,34 +27,31 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Manage-only view of people the user already follows (mirrors [com.example.musicapp.feature.artist.FollowedArtistsScreen]).
+ * Discovering *new* people to follow happens from the Search tab's People filter.
+ */
 @HiltViewModel
 class PeopleViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val chatRepository: ChatRepository,
 ) : ViewModel() {
 
-    val users: StateFlow<List<User>> = userRepository.getAllOtherUsers()
+    val followedUsers: StateFlow<List<User>> = userRepository.getFollowedUsers()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
-    fun toggleFollow(user: User) = viewModelScope.launch {
+    fun unfollow(user: User) = viewModelScope.launch {
         userRepository.toggleFollowUser(user.id)
-    }
-
-    /** Opens (creating if needed) a direct chat with [user] and hands back its conversation id. */
-    fun openChat(user: User, onReady: (String) -> Unit) = viewModelScope.launch {
-        val conversationId = chatRepository.getOrCreateConversationId(user.id)
-        onReady(conversationId)
     }
 }
 
 @Composable
 fun PeopleScreen(
     onBack: () -> Unit,
-    onOpenChat: (String) -> Unit,
+    onOpenFriend: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PeopleViewModel = hiltViewModel(),
 ) {
-    val users by viewModel.users.collectAsStateWithLifecycle()
+    val users by viewModel.followedUsers.collectAsStateWithLifecycle()
 
     Column(modifier = modifier.fillMaxSize()) {
         DetailTopBar(title = stringResource(R.string.people_title), onBack = onBack)
@@ -66,15 +62,10 @@ fun PeopleScreen(
                 items(items = users, key = { it.id }) { user ->
                     UserRow(
                         user = user,
-                        onClick = { viewModel.openChat(user, onReady = onOpenChat) },
+                        onClick = { onOpenFriend(user.id) },
                         trailing = {
-                            OutlinedButton(onClick = { viewModel.toggleFollow(user) }) {
-                                Text(
-                                    stringResource(
-                                        if (user.isFollowed) R.string.action_unfollow
-                                        else R.string.action_follow,
-                                    ),
-                                )
+                            OutlinedButton(onClick = { viewModel.unfollow(user) }) {
+                                Text(stringResource(R.string.action_unfollow))
                             }
                         },
                     )

@@ -75,8 +75,18 @@ class UserRepositoryImpl @Inject constructor(
         MockCatalog.otherUsers.map { it.copy(isFollowed = it.id in ids) }
     }.flowOn(io)
 
-    override fun getPublicPlaylists(): Flow<List<Playlist>> = flow {
-        emit(MockCatalog.globalPlaylists.map { it.copy(isPublic = true) })
+    override fun searchUsers(query: String): Flow<List<User>> = followedUserIds.map { ids ->
+        if (query.isBlank()) {
+            emptyList()
+        } else {
+            MockCatalog.otherUsers
+                .filter { it.name.contains(query, ignoreCase = true) || it.username.contains(query, ignoreCase = true) }
+                .map { it.copy(isFollowed = it.id in ids) }
+        }
+    }.flowOn(io)
+
+    override fun getUserPublicPlaylists(userId: String): Flow<List<Playlist>> = flow {
+        emit(MockCatalog.friendPlaylists[userId]?.let { listOf(it) } ?: emptyList())
     }.flowOn(io)
 
     override suspend fun getUserById(id: String): User? =

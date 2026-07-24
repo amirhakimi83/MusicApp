@@ -21,6 +21,7 @@ import com.example.musicapp.feature.playlists.PlaylistsScreen
 import com.example.musicapp.feature.profile.ProfileScreen
 import com.example.musicapp.feature.search.SearchScreen
 import com.example.musicapp.feature.settings.SettingsScreen
+import com.example.musicapp.feature.social.FriendProfileScreen
 import com.example.musicapp.feature.social.PeopleScreen
 
 @Composable
@@ -32,6 +33,7 @@ fun MelodiaNavHost(
 ) {
     fun openPlaylist(id: String) = navController.navigate(Routes.playlistDetail(id))
     fun openArtist(id: String) = navController.navigate(Routes.artistDetail(id))
+    fun openFriend(userId: String) = navController.navigate(Routes.friendProfile(userId))
     fun back() = navController.popBackStack()
 
     NavHost(
@@ -50,7 +52,9 @@ fun MelodiaNavHost(
                 onQuickArtists = { navController.navigate(Routes.ARTISTS) },
             )
         }
-        composable(Routes.SEARCH) { SearchScreen(onSongClick = onPlaySong) }
+        composable(Routes.SEARCH) {
+            SearchScreen(onSongClick = onPlaySong, onUserClick = { openFriend(it.id) })
+        }
         composable(Routes.DOWNLOADS) { DownloadsScreen(onSongClick = onPlaySong) }
         composable(Routes.PLAYLISTS) {
             PlaylistsScreen(onPlaylistClick = { openPlaylist(it.id) })
@@ -76,7 +80,18 @@ fun MelodiaNavHost(
         composable(Routes.PEOPLE) {
             PeopleScreen(
                 onBack = { back() },
+                onOpenFriend = { openFriend(it) },
+            )
+        }
+        composable(
+            route = Routes.FRIEND_PROFILE,
+            arguments = listOf(navArgument(Routes.ARG_USER_ID) { type = NavType.StringType }),
+        ) {
+            FriendProfileScreen(
+                onBack = { back() },
                 onOpenChat = { navController.navigate(Routes.chat(it)) },
+                onPlaySong = onPlaySong,
+                onPlayList = onPlayList,
             )
         }
         composable(

@@ -113,6 +113,21 @@ object MockCatalog {
         User("u5", "Mina", "minaa", "$COVER/u5/300/300", followerCount = 764),
     )
 
+    /** One public playlist per other user, shown on their profile — not part of [allPlaylists]. */
+    val friendPlaylists: Map<String, Playlist> = otherUsers.mapIndexed { i, user ->
+        user.id to Playlist(
+            id = "pl_friend_${user.id}",
+            title = "${user.name}'s Mix",
+            coverImageUrl = "$COVER/friend${i + 1}/500/500",
+            ownerId = user.id,
+            ownerName = user.name,
+            isPublic = true,
+            category = PlaylistCategory.USER,
+            songCount = 8,
+            songs = slice((i * 9) % songs.size, 8),
+        )
+    }.toMap()
+
     val conversationsSeed: List<Conversation> = otherUsers.take(3).mapIndexed { i, u ->
         Conversation(
             id = "conv_${u.id}",

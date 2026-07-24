@@ -22,7 +22,10 @@ interface UserRepository {
     /** Everyone else on the platform, with live follow state — for the People/discover screen. */
     fun getAllOtherUsers(): Flow<List<User>>
 
-    /** Public playlists of other users (for the social/discovery section). */
-    fun getPublicPlaylists(): Flow<List<Playlist>>
+    /** Other users whose name/username matches [query] — for the Search tab's People filter. */
+    fun searchUsers(query: String): Flow<List<User>>
+
+    /** [userId]'s own public playlist(s), viewable/playable from their profile. */
+    fun getUserPublicPlaylists(userId: String): Flow<List<Playlist>>
     suspend fun getUserById(id: String): User?
 }

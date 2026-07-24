@@ -23,6 +23,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -39,10 +40,12 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.musicapp.R
 import com.example.musicapp.domain.model.Song
+import com.example.musicapp.domain.model.User
 import com.example.musicapp.ui.components.ArtistRow
 import com.example.musicapp.ui.components.EmptyState
 import com.example.musicapp.ui.components.PlaylistCard
 import com.example.musicapp.ui.components.SongRow
+import com.example.musicapp.ui.components.UserRow
 import com.example.musicapp.ui.theme.AppCorners
 import com.example.musicapp.ui.theme.spacing
 
@@ -50,6 +53,7 @@ import com.example.musicapp.ui.theme.spacing
 fun SearchScreen(
     modifier: Modifier = Modifier,
     onSongClick: (Song) -> Unit = {},
+    onUserClick: (User) -> Unit = {},
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -93,6 +97,8 @@ fun SearchScreen(
                         onSongClick(it)
                     },
                     onToggleLike = viewModel::onToggleLike,
+                    onUserClick = onUserClick,
+                    onToggleFollowUser = viewModel::onToggleFollowUser,
                 )
             }
         }
@@ -218,6 +224,8 @@ private fun ResultsContent(
     songs: androidx.paging.compose.LazyPagingItems<Song>,
     onSongClick: (Song) -> Unit,
     onToggleLike: (Song) -> Unit,
+    onUserClick: (User) -> Unit,
+    onToggleFollowUser: (User) -> Unit,
 ) {
     when (state.filter) {
         SearchFilter.ARTISTS -> {
@@ -228,6 +236,33 @@ private fun ResultsContent(
                     items(state.artists.size) { i ->
                         val artist = state.artists[i]
                         ArtistRow(artist = artist, onClick = { })
+                    }
+                }
+            }
+        }
+
+        SearchFilter.USERS -> {
+            if (state.users.isEmpty()) {
+                EmptyState(messageRes = R.string.search_no_results, icon = Icons.Outlined.SearchOff)
+            } else {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(state.users, key = { it.id }) { user ->
+                        UserRow(
+                            user = user,
+                            onClick = { onUserClick(user) },
+                            trailing = {
+                                OutlinedButton(
+                                    onClick = { onToggleFollowUser(user) },
+                                ) {
+                                    Text(
+                                        stringResource(
+                                            if (user.isFollowed) R.string.action_unfollow
+                                            else R.string.action_follow,
+                                        ),
+                                    )
+                                }
+                            },
+                        )
                     }
                 }
             }
